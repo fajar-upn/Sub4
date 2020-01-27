@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Sub4</string>
+
+    <string name="title_catalogue">Catalogue Movies</string>
+    <string name="text_movies">Movies</string>
+    <string name="text_tv_show">Tv Show</string>
+    <string name="text_favorite">Favorite</string>
+    <string name="text_unfavorite">Unfavorite</string>
+    <string name="text_title">Title</string>
+    <string name="text_description">Description</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
