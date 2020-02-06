@@ -10,9 +10,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +24,13 @@ import android.widget.Toast;
 
 import com.example.sub4.Adapter.FavoriteAdapater;
 import com.example.sub4.Database.FavoriteHelper;
+import com.example.sub4.DetailFavorite;
 import com.example.sub4.DetailMovies;
 import com.example.sub4.Entity.Favorite;
+import com.example.sub4.HomeNavigation.Favorite.FavoriteFragment;
+import com.example.sub4.HomeNavigation.Movies.MoviesViewModel;
 import com.example.sub4.Mapping.MappingHelper;
+import com.example.sub4.Model.MoviesModel;
 import com.example.sub4.R;
 
 import java.lang.ref.WeakReference;
@@ -49,7 +55,6 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,12 +66,14 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         rvMoviesfavorite = view.findViewById(R.id.rv_movies_favorite);
         favoriteAdapater = new FavoriteAdapater(this);
 
+
         //recycler view
         recyclerView();
 
         //inisialisasi add favorite
         favoriteHelper = FavoriteHelper.getInstance(getContext().getApplicationContext());
         favoriteHelper.open();
+
 
         if (savedInstanceState == null){
             new LoadFavoriteAsync(favoriteHelper,this).execute();
@@ -75,21 +82,56 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
             if (list!=null){
                 favoriteAdapater.setListFavorite(list);
             }
+            Log.d("value", String.valueOf(list));
         }
-
         return view;
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(EXTRA_STATE, favoriteAdapater.getListFavorite());
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelableArrayList(EXTRA_STATE,favoriteAdapater.getListFavorite());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        favoriteHelper.close();
     }
 
     private void recyclerView() {
         rvMoviesfavorite.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMoviesfavorite.setHasFixedSize(true);
-            rvMoviesfavorite.setAdapter(favoriteAdapater);
+        rvMoviesfavorite.setAdapter(favoriteAdapater);
+
+        favoriteAdapater.setOnItemClickcallback(new FavoriteAdapater.OnItemClickcallback() {
+            @Override
+            public void onItemClicked(Favorite favorite) {
+                Toast.makeText(getContext(),"Detail "+favorite.getTitle(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), DetailFavorite.class);
+                intent.putExtra(DetailFavorite.EXTRA_DATA, favorite);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle savedInstanceState = new Bundle();
+        if (savedInstanceState == null){
+            new LoadFavoriteAsync(favoriteHelper,this).execute();
+        } else {
+            ArrayList<Favorite> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
+            if (list!=null){
+                favoriteAdapater.setListFavorite(list);
+            }
+            Log.d("onResume", String.valueOf(list));
+        }
+
+        rvMoviesfavorite.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMoviesfavorite.setHasFixedSize(true);
+        rvMoviesfavorite.setAdapter(favoriteAdapater);
     }
 
     @Override
@@ -102,8 +144,10 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         });
     }
 
+
     @Override
     public void postExecute(ArrayList<Favorite> favorites) {
+
         progressBar.setVisibility(View.INVISIBLE);
 
         if (favorites.size()>0){
@@ -141,31 +185,6 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
             super.onPostExecute(favorites);
             weakCallback.get().postExecute(favorites);
         }
-    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (data!=null){
-//            if (requestCode == DetailMovies.REQUEST_ADD){
-//                if (resultCode == DetailMovies.RESULT_ADD){
-//                    Favorite favorite = data.getParcelableExtra(DetailMovies.EXTRA_FAVORITE);
-//
-//                    favoriteAdapater.addItem(favorite);
-//                    Log.d("onActivityResult", String.valueOf(favorite));
-//                    rvMoviesfavorite.smoothScrollToPosition(favoriteAdapater.getItemCount()-1);
-//
-//                    Toast.makeText(getContext(),"1 Item Ditambahkan",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        favoriteHelper.close();
     }
 }
 

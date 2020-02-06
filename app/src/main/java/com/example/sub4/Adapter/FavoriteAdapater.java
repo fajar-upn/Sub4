@@ -1,6 +1,5 @@
 package com.example.sub4.Adapter;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.sub4.DetailFavorite;
 import com.example.sub4.DetailMovies;
 import com.example.sub4.Entity.Favorite;
 import com.example.sub4.Favorite.FavoriteMoviesFragment;
-import com.example.sub4.Model.MoviesModel;
 import com.example.sub4.R;
 
 import java.util.ArrayList;
@@ -24,8 +23,18 @@ import java.util.ArrayList;
 public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.FavoriteViewHolder> {
 
     private ArrayList<Favorite> listFavorite = new ArrayList<>();
+    private OnItemClickcallback onItemClickcallback;
     private FavoriteMoviesFragment mActivity;
     private DetailMovies nActivity;
+    private DetailFavorite bActivity;
+
+    public void setOnItemClickcallback(OnItemClickcallback onItemClickcallback) {
+        this.onItemClickcallback = onItemClickcallback;
+    }
+
+    public FavoriteAdapater(DetailFavorite activity) {
+        this.bActivity = activity;
+    }
 
     public FavoriteAdapater(FavoriteMoviesFragment activity) {
         this.mActivity = activity;
@@ -44,13 +53,13 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
             this.listFavorite.clear();
         }
         this.listFavorite.addAll(listFavorite);
-
+        Log.d("List", String.valueOf(listFavorite));
         notifyDataSetChanged();
     }
 
     public void addItem(Favorite favorite){
         this.listFavorite.add(favorite);
-        notifyItemInserted(listFavorite.size()-1);
+        notifyItemInserted(listFavorite.size());
     }
 
     public void updateItem(int position, Favorite favorite){
@@ -73,18 +82,23 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, int position) {
         Glide.with(holder.itemView.getContext())
                 .load(listFavorite.get(position).getPoster())
                 .apply(new RequestOptions().override(300,300))
                 .into(holder.ivPoster);
         holder.tvTitle.setText(listFavorite.get(position).getTitle());
         holder.tvDescription.setText(listFavorite.get(position).getDescription());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickcallback.onItemClicked(listFavorite.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        Log.d("Adapter", String.valueOf(listFavorite.size()));
         return listFavorite.size();
     }
 
@@ -97,5 +111,9 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
             tvTitle = itemView.findViewById(R.id.tv_title_favorite);
             tvDescription = itemView.findViewById(R.id.tv_description_favorite);
         }
+    }
+
+    public interface OnItemClickcallback{
+        void onItemClicked(Favorite favorite);
     }
 }

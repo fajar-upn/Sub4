@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FavoriteAddUpdateActivity"></activity>
+        <activity android:name=".DetailFavorite"></activity>
         <activity android:name=".DetailTvShow" />
         <activity android:name=".DetailMovies" />
         <activity

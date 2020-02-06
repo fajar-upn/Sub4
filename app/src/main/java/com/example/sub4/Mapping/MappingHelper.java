@@ -19,7 +19,6 @@ public class MappingHelper {
             String description = favoriteCursor.getString(favoriteCursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColoums.DESCRIPTION));
             favoriteList.add(new Favorite(id,poster,title,description));
         }
-        Log.d("DatabasePenting", String.valueOf(favoriteList.size()));
         return favoriteList;
     }
 }

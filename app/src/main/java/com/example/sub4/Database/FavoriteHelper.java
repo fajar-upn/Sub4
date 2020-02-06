@@ -46,22 +46,21 @@ public class FavoriteHelper {
     }
 
     public Cursor queryAll(){
-        return database.query(
-                DATABASE_TABLE,
+        return database.query(DATABASE_TABLE,
                 null,
                 null,
                 null,
                 null,
                 null,
-                "'_ID'"+"DESC"
+                _ID+" ASC",
+                null
         );
     }
 
     public Cursor queryById(String id){
-        return database.query(
-                DATABASE_TABLE,
+        return database.query(DATABASE_TABLE,
                 null,
-                "'_ID'" + " = ?",
+                _ID + " = ?",
                 new String[]{id},
                 null,
                 null,
@@ -72,7 +71,6 @@ public class FavoriteHelper {
 
     public long insert(ContentValues values){
         return database.insert(DATABASE_TABLE,null,values);
-
     }
 
     public int update(String id, ContentValues values){

@@ -133,8 +133,6 @@ public class DetailMovies extends AppCompatActivity {
                     intent.putExtra(EXTRA_POSITION, position);
 
 
-//                    startActivityForResult(intent,FavoriteMoviesFragment.REQUEST_ADD_FRAGMENT);
-
                     ContentValues values = new ContentValues();
                     values.put(POSTER,poster);
                     values.put(TITLE,title);
@@ -154,7 +152,6 @@ public class DetailMovies extends AppCompatActivity {
                             favorite.setId((int) result);
                             setResult(RESULT_ADD,intent);
                             favoriteAdapater.addItem(favorite);
-
                             finish();
                         }else {
                             Toast.makeText(DetailMovies.this,"Gagal Menambahkan favorite",Toast.LENGTH_SHORT).show();

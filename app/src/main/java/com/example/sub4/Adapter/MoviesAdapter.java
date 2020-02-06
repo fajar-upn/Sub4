@@ -17,8 +17,6 @@ import com.example.sub4.R;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL;
-
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
     private ArrayList<MoviesModel> moviesData = new ArrayList<>();
@@ -60,7 +58,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     @Override
     public int getItemCount() {
-        Log.d("MoviesDetail", String.valueOf(moviesData.size()));
         return moviesData.size();
     }
 
