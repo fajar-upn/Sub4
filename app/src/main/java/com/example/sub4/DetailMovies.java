@@ -130,6 +130,7 @@ public class DetailMovies extends AppCompatActivity {
 
                     Intent intent = new Intent();
                     intent.putExtra(EXTRA_FAVORITE, favorite);
+
                     intent.putExtra(EXTRA_POSITION, position);
 
 

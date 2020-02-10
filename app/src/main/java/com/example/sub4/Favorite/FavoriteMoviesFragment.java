@@ -4,6 +4,7 @@ package com.example.sub4.Favorite;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -47,8 +48,6 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
     private FavoriteAdapater favoriteAdapater;
     private FavoriteHelper favoriteHelper;
 
-    private ArrayList<Favorite> favorites = new ArrayList<>();
-
     private static final String EXTRA_STATE = "EXTRA_STATE";
 
     public FavoriteMoviesFragment() {
@@ -74,7 +73,6 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         favoriteHelper = FavoriteHelper.getInstance(getContext().getApplicationContext());
         favoriteHelper.open();
 
-
         if (savedInstanceState == null){
             new LoadFavoriteAsync(favoriteHelper,this).execute();
         } else {
@@ -82,7 +80,6 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
             if (list!=null){
                 favoriteAdapater.setListFavorite(list);
             }
-            Log.d("value", String.valueOf(list));
         }
         return view;
     }
@@ -94,6 +91,33 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        favoriteAdapater.notifyDataSetChanged();
+        if (favoriteAdapater == null){
+
+            new LoadFavoriteAsync(favoriteHelper,this).execute();
+        }else {
+            ArrayList<Favorite> list = favoriteAdapater.getListFavorite();
+            if (list!=null){
+                favoriteAdapater.setListFavorite(list);
+            }
+        }
+
+    }
+
+    //    @Override
+//    public void onResume() {
+//        super.onResume();
+//        progressBar.setVisibility(View.VISIBLE);
+//        ArrayList<Favorite> favorites = favoriteAdapater.getListFavorite();
+//        Log.d("Favorite", String.valueOf(favorites));
+//
+//
+//        recyclerView();
+//    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         favoriteHelper.close();
@@ -103,6 +127,8 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         rvMoviesfavorite.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMoviesfavorite.setHasFixedSize(true);
         rvMoviesfavorite.setAdapter(favoriteAdapater);
+        favoriteAdapater.notifyDataSetChanged();
+        Log.d("recycler", String.valueOf(rvMoviesfavorite));
 
         favoriteAdapater.setOnItemClickcallback(new FavoriteAdapater.OnItemClickcallback() {
             @Override
@@ -113,25 +139,6 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Bundle savedInstanceState = new Bundle();
-        if (savedInstanceState == null){
-            new LoadFavoriteAsync(favoriteHelper,this).execute();
-        } else {
-            ArrayList<Favorite> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
-            if (list!=null){
-                favoriteAdapater.setListFavorite(list);
-            }
-            Log.d("onResume", String.valueOf(list));
-        }
-
-        rvMoviesfavorite.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvMoviesfavorite.setHasFixedSize(true);
-        rvMoviesfavorite.setAdapter(favoriteAdapater);
     }
 
     @Override
@@ -186,6 +193,8 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
             weakCallback.get().postExecute(favorites);
         }
     }
+
+
 }
 
 interface LoadFavoriteCallback{
