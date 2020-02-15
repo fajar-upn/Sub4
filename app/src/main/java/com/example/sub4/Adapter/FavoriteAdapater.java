@@ -99,6 +99,7 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
 
     @Override
     public int getItemCount() {
+        Log.i("AAAAAAA JUMLAH ", ""+ listFavorite.size());
         return listFavorite.size();
     }
 

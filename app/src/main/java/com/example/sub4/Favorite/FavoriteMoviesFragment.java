@@ -60,14 +60,21 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorite_movies, container, false);
 
+
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         //inisialisasi
         progressBar = view.findViewById(R.id.progress_bar_movies_favorite);
         rvMoviesfavorite = view.findViewById(R.id.rv_movies_favorite);
         favoriteAdapater = new FavoriteAdapater(this);
-
-
-        //recycler view
-        recyclerView();
 
         //inisialisasi add favorite
         favoriteHelper = FavoriteHelper.getInstance(getContext().getApplicationContext());
@@ -76,12 +83,13 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         if (savedInstanceState == null){
             new LoadFavoriteAsync(favoriteHelper,this).execute();
         } else {
+            Log.i("AAAAAA S", "MASUK SAVE");
             ArrayList<Favorite> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
             if (list!=null){
                 favoriteAdapater.setListFavorite(list);
             }
         }
-        return view;
+
     }
 
     @Override
@@ -91,43 +99,39 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        favoriteAdapater.notifyDataSetChanged();
-        if (favoriteAdapater == null){
+    public void onResume() {
+        super.onResume();
+        new LoadFavoriteAsync(favoriteHelper,this).execute();
+//        progressBar.setVisibility(View.VISIBLE);
+//
+//        ArrayList<Favorite> favorites = favoriteAdapater.getListFavorite();
+//
+//        Log.d("Jumlah", String.valueOf(favorites.size()));
+//        if (favorites.size()>0){
+//            favoriteAdapater.setListFavorite(favorites);
+//        }else {
+//            favoriteAdapater.setListFavorite(new ArrayList<Favorite>());
+//            Toast.makeText(getContext(), "Data not available", Toast.LENGTH_SHORT).show();
+//        }
+    }
 
-            new LoadFavoriteAsync(favoriteHelper,this).execute();
-        }else {
-            ArrayList<Favorite> list = favoriteAdapater.getListFavorite();
-            if (list!=null){
-                favoriteAdapater.setListFavorite(list);
-            }
-        }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
 
     }
 
-    //    @Override
-//    public void onResume() {
-//        super.onResume();
-//        progressBar.setVisibility(View.VISIBLE);
-//        ArrayList<Favorite> favorites = favoriteAdapater.getListFavorite();
-//        Log.d("Favorite", String.valueOf(favorites));
-//
-//
-//        recyclerView();
-//    }
-
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         favoriteHelper.close();
     }
 
     private void recyclerView() {
         rvMoviesfavorite.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvMoviesfavorite.setHasFixedSize(true);
+//        rvMoviesfavorite.setHasFixedSize(true);
         rvMoviesfavorite.setAdapter(favoriteAdapater);
-        favoriteAdapater.notifyDataSetChanged();
+//        favoriteAdapater.notifyDataSetChanged();
         Log.d("recycler", String.valueOf(rvMoviesfavorite));
 
         favoriteAdapater.setOnItemClickcallback(new FavoriteAdapater.OnItemClickcallback() {
@@ -139,6 +143,7 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -158,11 +163,21 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         progressBar.setVisibility(View.INVISIBLE);
 
         if (favorites.size()>0){
+            favoriteAdapater = new FavoriteAdapater(this);
+
             favoriteAdapater.setListFavorite(favorites);
+            //recycler view
+            recyclerView();
+            Toast.makeText(getContext(), "Data OK" + favorites.size(), Toast.LENGTH_SHORT).show();
+            Log.i("AAAAAA isi", favorites.get(0).getTitle());
         }else {
+
             favoriteAdapater.setListFavorite(new ArrayList<Favorite>());
             Toast.makeText(getContext(), "Data not available", Toast.LENGTH_SHORT).show();
         }
+
+
+
     }
 
     private static class LoadFavoriteAsync extends AsyncTask<Void, Void, ArrayList<Favorite>> {
