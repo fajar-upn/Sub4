@@ -1,6 +1,7 @@
 package com.example.sub4;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.example.sub4.Database.FavoriteHelper;
 import com.example.sub4.Entity.Favorite;
 import com.example.sub4.Favorite.FavoriteMoviesFragment;
 
+import java.util.ArrayList;
+
 public class DetailFavorite extends AppCompatActivity{
 
     private ImageView ivPoster;
@@ -29,6 +32,7 @@ public class DetailFavorite extends AppCompatActivity{
     private FavoriteHelper favoriteHelper;
     private FavoriteAdapater favoriteAdapater;
 
+
     public static final String EXTRA_DATA = "extra_data";
     public static final String EXTRA_FAVORITE = "extra_favorite";
     public static final String EXTRA_POSITION = "extra_position";
@@ -37,6 +41,8 @@ public class DetailFavorite extends AppCompatActivity{
     public static final int REQUEST_UPDATE = 200;
     public static final int RESULT_UPDATE = 201;
     public static final int RESULT_DELETE = 301;
+
+    private ArrayList<Favorite> favorites = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +77,18 @@ public class DetailFavorite extends AppCompatActivity{
             btnUnfavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(DetailFavorite.this,"Unfavorite"+favorite.getTitle(), Toast.LENGTH_SHORT).show();
                     long result = favoriteHelper.deleteById(String.valueOf(favorite.getId()));
                     if (result>0){
-                        Toast.makeText(DetailFavorite.this,"Unfavorite"+favorite.getTitle(),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
+                        Toast.makeText(DetailFavorite.this,"Unfavorite : "+favorite.getTitle(),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(DetailFavorite.this,FavoriteMoviesFragment.class);
                         intent.putExtra(EXTRA_POSITION,position);
                         setResult(RESULT_DELETE,intent);
-                        favoriteAdapater.removeItem(position);
+                        if (favorites.size()>0){
+                            favoriteAdapater.removeItem(position);
+                        }
                         finish();
                     }else {
-                        Toast.makeText(DetailFavorite.this,"Failed Unfavorite",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailFavorite.this,"Failed Unfavorite : ",Toast.LENGTH_SHORT).show();
                     }
                 }
             });

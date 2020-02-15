@@ -26,17 +26,11 @@ public class FavoriteFragment extends Fragment {
     private FavoriteViewModel favoriteViewModel;
     private FragmentActivity fragmentActivity;
 
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        fragmentActivity = (FragmentActivity) activity;
-        super.onAttach(activity);
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
-        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
 
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(fragmentManager,this);
         ViewPager viewPager = view.findViewById(R.id.view_pager);

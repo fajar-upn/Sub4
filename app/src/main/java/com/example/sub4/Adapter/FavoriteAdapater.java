@@ -16,6 +16,7 @@ import com.example.sub4.DetailFavorite;
 import com.example.sub4.DetailMovies;
 import com.example.sub4.Entity.Favorite;
 import com.example.sub4.Favorite.FavoriteMoviesFragment;
+import com.example.sub4.Favorite.FavoriteTvShowFragment;
 import com.example.sub4.R;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
     private ArrayList<Favorite> listFavorite = new ArrayList<>();
     private OnItemClickcallback onItemClickcallback;
     private FavoriteMoviesFragment mActivity;
+    private FavoriteTvShowFragment aActivity;
     private DetailMovies nActivity;
     private DetailFavorite bActivity;
 
@@ -49,11 +51,12 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
     }
 
     public void setListFavorite(ArrayList<Favorite> listFavorite) {
-        if (listFavorite.size()>0){
-            this.listFavorite.clear();
-        }
+//        if (listFavorite.size()>=0){
+//
+//        }
+        this.listFavorite.clear();
+
         this.listFavorite.addAll(listFavorite);
-        Log.d("List", String.valueOf(listFavorite));
         notifyDataSetChanged();
     }
 
@@ -99,7 +102,6 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
 
     @Override
     public int getItemCount() {
-        Log.i("AAAAAAA JUMLAH ", ""+ listFavorite.size());
         return listFavorite.size();
     }
 

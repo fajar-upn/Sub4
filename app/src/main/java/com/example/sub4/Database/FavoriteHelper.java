@@ -84,32 +84,4 @@ public class FavoriteHelper {
     public int deleteById(String id){
         return database.delete(DATABASE_TABLE, _ID+" = ?", new String[]{id});
     }
-
-//    public ArrayList<Favorite> getAllFavorite(){
-//        ArrayList<Favorite> arrayList = new ArrayList<>();
-//        Cursor cursor = database.query(DATABASE_TABLE,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null,
-//                _ID+" ASC",
-//                null
-//        );
-//
-//        cursor.moveToFirst();
-//        Favorite favorite;
-//        if (cursor.getCount()>0){
-//            do {
-//                favorite = new Favorite();
-//                favorite.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColoums._ID)));
-//                favorite.setPoster(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColoums.POSTER)));
-//                favorite.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColoums.TITLE)));
-//                favorite.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColoums.DESCRIPTION)));
-//                arrayList.add(favorite);
-//                cursor.moveToNext();
-//            }while (!cursor.isAfterLast());
-//        }
-//        return arrayList;
-//    }
 }

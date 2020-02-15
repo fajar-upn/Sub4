@@ -34,8 +34,8 @@
     <TextView
         android:id="@+id/tv_description_favorite"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:textSize="14dp"
+        android:layout_height="140dp"
+        android:textSize="14sp"
         android:text="@string/text_description"
         app:layout_constraintLeft_toRightOf="@id/iv_poster_favorite"
         app:layout_constraintTop_toBottomOf="@id/tv_title_favorite"
