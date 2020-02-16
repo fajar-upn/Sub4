@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.sub4.Adapter.FavoriteAdapater;
+import com.example.sub4.Adapter.FavoriteMoviesAdapater;
 import com.example.sub4.Database.FavoriteHelper;
 import com.example.sub4.Entity.Favorite;
-import com.example.sub4.Favorite.FavoriteMoviesFragment;
 import com.example.sub4.Model.MoviesModel;
 
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.DESCRIPTION;
@@ -40,17 +38,13 @@ public class DetailMovies extends AppCompatActivity {
     private int position;
     private FavoriteHelper favoriteHelper;
 
-    private FavoriteAdapater favoriteAdapater;
-    private RecyclerView rvMoviesFavorite;
+    private FavoriteMoviesAdapater favoriteMoviesAdapater;
 
     public static final String EXTRA_FAVORITE = "extra_favorite";
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_DATA = "extra_data";
-    public static final int REQUEST_ADD = 100;
     public static final int RESULT_ADD = 101;
-    public static final int REQUEST_UPDATE = 200;
     public static final int RESULT_UPDATE = 201;
-    public static final int RESULT_DELETE = 301;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +56,13 @@ public class DetailMovies extends AppCompatActivity {
         tvDescription = findViewById(R.id.tv_description_movies_detail);
         btnFavorite = findViewById(R.id.btn_favorite_movies_detail);
         progressBar = findViewById(R.id.pb_movies_detail);
-        rvMoviesFavorite = findViewById(R.id.rv_movies_favorite);
 
         showLoading(true);
 
         //inisialisasi untuk menambahkan ke favorite
         favoriteHelper = FavoriteHelper.getInstance(getApplicationContext());
         favorite = getIntent().getParcelableExtra(EXTRA_FAVORITE);
-        favoriteAdapater = new FavoriteAdapater(this);
+        favoriteMoviesAdapater = new FavoriteMoviesAdapater(this);
         favoriteHelper.open();
 
         //inisilisasi data dari recycler view
@@ -89,12 +82,6 @@ public class DetailMovies extends AppCompatActivity {
         if (isFavorite){
             actionBarTitle = "Unfavorite";
             btnTitle = "Unfavorite";
-
-//            if (favorite!=null){
-//                Glide.with(this).load(movies.getPoster()).into(ivPoster);
-//                tvTitle.setText(movies.getTitle());
-//                tvDescription.setText(movies.getDescription());
-//            }
         }else {
             actionBarTitle = "Favorite";
             btnTitle = "Favorite";
@@ -152,7 +139,7 @@ public class DetailMovies extends AppCompatActivity {
                         if (result>0){
                             favorite.setId((int) result);
                             setResult(RESULT_ADD,intent);
-                            favoriteAdapater.addItem(favorite);
+                            favoriteMoviesAdapater.addItem(favorite);
                             finish();
                         }else {
                             Toast.makeText(DetailMovies.this,"Gagal Menambahkan favorite",Toast.LENGTH_SHORT).show();

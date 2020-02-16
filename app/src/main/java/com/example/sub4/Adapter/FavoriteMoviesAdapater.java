@@ -1,6 +1,5 @@
 package com.example.sub4.Adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,37 +11,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.sub4.DetailFavorite;
+import com.example.sub4.DetailFavoriteMovies;
 import com.example.sub4.DetailMovies;
 import com.example.sub4.Entity.Favorite;
 import com.example.sub4.Favorite.FavoriteMoviesFragment;
-import com.example.sub4.Favorite.FavoriteTvShowFragment;
 import com.example.sub4.R;
 
 import java.util.ArrayList;
 
-public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.FavoriteViewHolder> {
+public class FavoriteMoviesAdapater extends RecyclerView.Adapter<FavoriteMoviesAdapater.FavoriteViewHolder> {
 
     private ArrayList<Favorite> listFavorite = new ArrayList<>();
     private OnItemClickcallback onItemClickcallback;
     private FavoriteMoviesFragment mActivity;
-    private FavoriteTvShowFragment aActivity;
     private DetailMovies nActivity;
-    private DetailFavorite bActivity;
+    private DetailFavoriteMovies bActivity;
 
     public void setOnItemClickcallback(OnItemClickcallback onItemClickcallback) {
         this.onItemClickcallback = onItemClickcallback;
     }
 
-    public FavoriteAdapater(DetailFavorite activity) {
+    public FavoriteMoviesAdapater(DetailFavoriteMovies activity) {
         this.bActivity = activity;
     }
 
-    public FavoriteAdapater(FavoriteMoviesFragment activity) {
+    public FavoriteMoviesAdapater(FavoriteMoviesFragment activity) {
         this.mActivity = activity;
     }
 
-    public FavoriteAdapater(DetailMovies activity){
+    public FavoriteMoviesAdapater(DetailMovies activity){
         this.nActivity = activity;
     }
 
@@ -51,11 +48,7 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
     }
 
     public void setListFavorite(ArrayList<Favorite> listFavorite) {
-//        if (listFavorite.size()>=0){
-//
-//        }
         this.listFavorite.clear();
-
         this.listFavorite.addAll(listFavorite);
         notifyDataSetChanged();
     }
@@ -63,12 +56,6 @@ public class FavoriteAdapater extends RecyclerView.Adapter<FavoriteAdapater.Favo
     public void addItem(Favorite favorite){
         this.listFavorite.add(favorite);
         notifyItemInserted(listFavorite.size());
-    }
-
-    public void updateItem(int position, Favorite favorite){
-        this.listFavorite.set(position, favorite);
-        notifyItemChanged(position, favorite);
-
     }
 
     public void removeItem(int position){

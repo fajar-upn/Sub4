@@ -7,7 +7,7 @@ import android.util.Log;
 public class Favorite implements Parcelable {
 
     private int id;
-    private String poster, title, description, date;
+    private String poster, title, description;
 
     public Favorite(){
 
@@ -18,7 +18,6 @@ public class Favorite implements Parcelable {
         poster = in.readString();
         title = in.readString();
         description = in.readString();
-        date = in.readString();
     }
 
     public static final Creator<Favorite> CREATOR = new Creator<Favorite>() {
@@ -72,13 +71,7 @@ public class Favorite implements Parcelable {
         this.description = description;
     }
 
-    public String getDate() {
-        return date;
-    }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     @Override
     public int describeContents() {
@@ -91,6 +84,5 @@ public class Favorite implements Parcelable {
         dest.writeString(poster);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(date);
     }
 }

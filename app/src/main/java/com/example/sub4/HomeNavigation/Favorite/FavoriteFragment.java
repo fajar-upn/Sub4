@@ -23,8 +23,6 @@ import com.google.android.material.tabs.TabLayout;
 
 public class FavoriteFragment extends Fragment {
 
-    private FavoriteViewModel favoriteViewModel;
-    private FragmentActivity fragmentActivity;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

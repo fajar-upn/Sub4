@@ -61,9 +61,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         return moviesData.size();
     }
 
-
-
-
     public class MoviesViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivPoster;
         private TextView tvTitle, tvDescription;

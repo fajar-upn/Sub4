@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailFavorite">
+    tools:context=".DetailFavoriteMovies">
 
     <ProgressBar
-        android:id="@+id/pb_favorite_detail"
+        android:id="@+id/pb_favorite_movies_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -15,7 +15,7 @@
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/iv_poster_favorite_detail"
+        android:id="@+id/iv_favorite_poster_movies_detail"
         android:layout_width="200dp"
         android:layout_height="260dp"
         android:layout_marginLeft="110dp"
@@ -26,11 +26,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_title_favorite_detail"
+        android:id="@+id/tv_favorite_title_movies_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_poster_favorite_detail"
+        app:layout_constraintTop_toBottomOf="@id/iv_favorite_poster_movies_detail"
         android:text="@string/text_title"
         android:textSize="22dp"
         android:layout_marginTop="10dp"
@@ -40,11 +40,11 @@
         android:textColor="@color/black"/>
 
     <TextView
-        android:id="@+id/tv_description_favorite_detail"
+        android:id="@+id/tv_favorite_description_movies_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_favorite_detail"
+        app:layout_constraintTop_toBottomOf="@id/tv_favorite_title_movies_detail"
         android:text="@string/text_description"
         android:textSize="14dp"
         android:layout_marginTop="10dp"
@@ -54,7 +54,7 @@
         android:textColor="@color/black"/>
 
     <Button
-        android:id="@+id/btn_favorite_unfavorite_detail"
+        android:id="@+id/btn_unfavorite_movies_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_unfavorite"

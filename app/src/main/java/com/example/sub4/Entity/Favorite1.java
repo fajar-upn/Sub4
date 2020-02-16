@@ -1,46 +1,42 @@
-package com.example.sub4.Model;
+package com.example.sub4.Entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class MoviesModel implements Parcelable {
+public class Favorite1 implements Parcelable {
     private int id;
     private String poster, title, description;
 
-    public MoviesModel(JSONObject movies){
-        try {
-            this.id = movies.getInt("id");
-            String poster1 = movies.getString("poster_path");
-            this.poster = "https://image.tmdb.org/t/p/w342"+poster1;
-            this.title = movies.getString("title");
-            this.description = movies.getString("overview");
-        } catch (JSONException e) {
-            Log.d("Exception", e.getMessage());
-        }
+
+    public Favorite1(int id, String poster, String title, String description) {
+        this.id = id;
+        this.poster = poster;
+        this.title = title;
+        this.description = description;
     }
 
-    protected MoviesModel(Parcel in) {
+    protected Favorite1(Parcel in) {
         id = in.readInt();
         poster = in.readString();
         title = in.readString();
         description = in.readString();
     }
 
-    public static final Creator<MoviesModel> CREATOR = new Creator<MoviesModel>() {
+    public static final Creator<Favorite1> CREATOR = new Creator<Favorite1>() {
         @Override
-        public MoviesModel createFromParcel(Parcel in) {
-            return new MoviesModel(in);
+        public Favorite1 createFromParcel(Parcel in) {
+            return new Favorite1(in);
         }
 
         @Override
-        public MoviesModel[] newArray(int size) {
-            return new MoviesModel[size];
+        public Favorite1[] newArray(int size) {
+            return new Favorite1[size];
         }
     };
+
+    public Favorite1() {
+
+    }
 
     public int getId() {
         return id;

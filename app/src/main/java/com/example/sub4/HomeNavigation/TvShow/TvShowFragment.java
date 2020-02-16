@@ -79,7 +79,7 @@ public class TvShowFragment extends Fragment {
             @Override
             public void onItemClicked(TvShowModel model) {
                 Intent intent = new Intent(getContext(), DetailTvShow.class);
-                intent.putExtra("data",model);
+                intent.putExtra(DetailTvShow.EXTRA_DATA,model);
                 startActivity(intent);
             }
         });

@@ -1,42 +1,33 @@
 package com.example.sub4.Favorite;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.sub4.Adapter.FavoriteAdapater;
+import com.example.sub4.Adapter.FavoriteMoviesAdapater;
 import com.example.sub4.Database.FavoriteHelper;
-import com.example.sub4.DetailFavorite;
-import com.example.sub4.DetailMovies;
+import com.example.sub4.DetailFavoriteMovies;
 import com.example.sub4.Entity.Favorite;
-import com.example.sub4.HomeNavigation.Favorite.FavoriteFragment;
-import com.example.sub4.HomeNavigation.Movies.MoviesViewModel;
+import com.example.sub4.Interface.LoadFavoriteCallback;
 import com.example.sub4.Mapping.MappingHelper;
-import com.example.sub4.Model.MoviesModel;
 import com.example.sub4.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +36,7 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
 
     private ProgressBar progressBar;
     private RecyclerView rvMoviesfavorite;
-    private FavoriteAdapater favoriteAdapater;
+    private FavoriteMoviesAdapater favoriteMoviesAdapater;
     private FavoriteHelper favoriteHelper;
 
     private static final String EXTRA_STATE = "EXTRA_STATE";
@@ -70,21 +61,15 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         //inisialisasi
         progressBar = view.findViewById(R.id.progress_bar_movies_favorite);
         rvMoviesfavorite = view.findViewById(R.id.rv_movies_favorite);
-        favoriteAdapater = new FavoriteAdapater(this);
-
-        //inisialisasi add favorite
-        favoriteHelper = FavoriteHelper.getInstance(getContext().getApplicationContext());
-        favoriteHelper.open();
+        favoriteMoviesAdapater = new FavoriteMoviesAdapater(this);
 
         //recycler view
         recyclerView();
 
-        if (savedInstanceState == null){
-            new LoadFavoriteAsync(favoriteHelper,this).execute();
-        } else {
+        if (savedInstanceState!=null){
             ArrayList<Favorite> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
             if (list!=null){
-                favoriteAdapater.setListFavorite(list);
+                favoriteMoviesAdapater.setListFavorite(list);
             }
         }
 
@@ -93,28 +78,21 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putParcelableArrayList(EXTRA_STATE,favoriteAdapater.getListFavorite());
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        favoriteHelper.close();
+        savedInstanceState.putParcelableArrayList(EXTRA_STATE, favoriteMoviesAdapater.getListFavorite());
     }
 
     private void recyclerView() {
         rvMoviesfavorite.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMoviesfavorite.setHasFixedSize(true);
-        rvMoviesfavorite.setAdapter(favoriteAdapater);
-        favoriteAdapater.notifyDataSetChanged();
+        rvMoviesfavorite.setAdapter(favoriteMoviesAdapater);
+        favoriteMoviesAdapater.notifyDataSetChanged();
 
-        favoriteAdapater.setOnItemClickcallback(new FavoriteAdapater.OnItemClickcallback() {
+        favoriteMoviesAdapater.setOnItemClickcallback(new FavoriteMoviesAdapater.OnItemClickcallback() {
             @Override
             public void onItemClicked(Favorite favorite) {
                 Toast.makeText(getContext(),"Detail "+favorite.getTitle(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(), DetailFavorite.class);
-                intent.putExtra(DetailFavorite.EXTRA_DATA, favorite);
+                Intent intent = new Intent(getContext(), DetailFavoriteMovies.class);
+                intent.putExtra(DetailFavoriteMovies.EXTRA_DATA, favorite);
                 startActivity(intent);
             }
         });
@@ -124,7 +102,13 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
     @Override
     public void onResume() {
         super.onResume();
+
+        //inisialisasi add favorite
+        favoriteHelper = FavoriteHelper.getInstance(getContext().getApplicationContext());
+        favoriteHelper.open();
         new LoadFavoriteAsync(favoriteHelper,this).execute();
+
+        //memanggil recycler view
         recyclerView();
     }
 
@@ -145,11 +129,13 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         progressBar.setVisibility(View.INVISIBLE);
 
         if (favorites.size()>0){
-            favoriteAdapater.setListFavorite(favorites);
+            favoriteMoviesAdapater.setListFavorite(favorites);
         }else {
-            favoriteAdapater.setListFavorite(new ArrayList<Favorite>());
+            favoriteMoviesAdapater.setListFavorite(new ArrayList<Favorite>());
             Toast.makeText(getContext(), "Data not available", Toast.LENGTH_SHORT).show();
         }
+
+        favoriteHelper.close();
     }
 
     private static class LoadFavoriteAsync extends AsyncTask<Void, Void, ArrayList<Favorite>> {
@@ -180,9 +166,4 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
             weakCallback.get().postExecute(favorites);
         }
     }
-}
-
-interface LoadFavoriteCallback{
-    void preExecute();
-    void postExecute(ArrayList<Favorite> favorites);
 }
