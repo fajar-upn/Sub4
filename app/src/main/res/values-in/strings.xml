@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_catalogue">Katalog Film</string>
+    <string name="text_movies">Film</string>
+    <string name="text_tv_show">Acara Tv</string>
+    <string name="text_favorite">Kesukaan</string>
+    <string name="text_unfavorite">Batal kesukaan</string>
+    <string name="text_title">Judul</string>
+    <string name="text_description">Deskripsi</string>
+    <string name="change_language_settings">Udah Bahasa</string>
+</resources>
