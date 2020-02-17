@@ -1,5 +1,6 @@
 package com.example.sub4.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ public class FavoriteMoviesAdapater extends RecyclerView.Adapter<FavoriteMoviesA
                 .load(listFavorite.get(position).getPoster())
                 .apply(new RequestOptions().override(300,300))
                 .into(holder.ivPoster);
+
         holder.tvTitle.setText(listFavorite.get(position).getTitle());
         holder.tvDescription.setText(listFavorite.get(position).getDescription());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +87,8 @@ public class FavoriteMoviesAdapater extends RecyclerView.Adapter<FavoriteMoviesA
                 onItemClickcallback.onItemClicked(listFavorite.get(holder.getAdapterPosition()));
             }
         });
+
+
     }
 
     @Override

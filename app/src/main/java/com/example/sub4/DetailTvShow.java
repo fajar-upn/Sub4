@@ -22,6 +22,7 @@ import com.example.sub4.Entity.Favorite1;
 import com.example.sub4.Model.TvShowModel;
 
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.DESCRIPTION;
+import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.ID;
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.POSTER;
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.TITLE;
 
@@ -77,27 +78,28 @@ public class DetailTvShow extends AppCompatActivity {
         String btnTitle;
 
         //indikator telah di pencet favorite
-        if (isFavorite){
-            actionBarTitle = "Unfavorite";
-            btnTitle = "Unfavorite";
-        }else {
-            actionBarTitle = "Favorite";
-            btnTitle = "Favorite";
-        }
-
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(actionBarTitle);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        btnFavorite.setText(btnTitle);
+//        if (isFavorite){
+//            actionBarTitle = "Unfavorite";
+//            btnTitle = "Unfavorite";
+//        }else {
+//            actionBarTitle = "Favorite";
+//            btnTitle = "Favorite";
+//        }
+//
+//        if (getSupportActionBar() != null){
+//            getSupportActionBar().setTitle(actionBarTitle);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
+//
+//        btnFavorite.setText(btnTitle);
 
         if (tvShow!=null){
+            final int id = tvShow.getId();
             final String poster = tvShow.getPoster();
             final String title = tvShow.getTitle();
             final String description = tvShow.getDescription();
 
-            Glide.with(this).load(poster).into(ivPoster);
+            Glide.with(this).load(poster).fitCenter().into(ivPoster);
             tvTitle.setText(title);
             tvDescription.setText(description);
 
@@ -106,6 +108,7 @@ public class DetailTvShow extends AppCompatActivity {
                 public void onClick(View v) {
                     Toast.makeText(DetailTvShow.this,"Favorite : "
                             +tvShow.getTitle(),Toast.LENGTH_SHORT).show();
+                    favorite.setId(id);
                     favorite.setPoster(poster);
                     favorite.setTitle(title);
                     favorite.setDescription(description);
@@ -114,8 +117,8 @@ public class DetailTvShow extends AppCompatActivity {
                     intent.putExtra(EXTRA_FAVORITE, favorite);
                     intent.putExtra(EXTRA_POSITION, position);
 
-
                     ContentValues values = new ContentValues();
+                    values.put(ID,id);
                     values.put(POSTER,poster);
                     values.put(TITLE,title);
                     values.put(DESCRIPTION, description);
@@ -131,12 +134,9 @@ public class DetailTvShow extends AppCompatActivity {
                         long result = favoriteHelper.insert1(values);
 
                         if (result>0){
-                            favorite.setId((int) result);
-                            setResult(RESULT_ADD,intent);
-                            favoriteTvShowAdapter.addItem1(favorite);
                             finish();
                         }else {
-                            Toast.makeText(DetailTvShow.this,"Gagal Menambahkan favorite",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailTvShow.this,"Failed to add favorite ",Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

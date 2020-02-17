@@ -90,7 +90,7 @@ public class FavoriteMoviesFragment extends Fragment implements LoadFavoriteCall
         favoriteMoviesAdapater.setOnItemClickcallback(new FavoriteMoviesAdapater.OnItemClickcallback() {
             @Override
             public void onItemClicked(Favorite favorite) {
-                Toast.makeText(getContext(),"Detail "+favorite.getTitle(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Detail : "+favorite.getTitle(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), DetailFavoriteMovies.class);
                 intent.putExtra(DetailFavoriteMovies.EXTRA_DATA, favorite);
                 startActivity(intent);

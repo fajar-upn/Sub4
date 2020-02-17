@@ -9,12 +9,12 @@ public class DatabaseHelper1 extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION1 = 1;
 
     private static final String SQL_CREATE_TABLE_FAVORITE_1 = String.format("CREATE TABLE %s"
-                    +"(%s INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    +"(%s INTEGER PRIMARY KEY,"
                     +"%s TEXT NOT NULL,"
                     +"%s TEXT NOT NULL,"
                     +"%s TEXT NOT NULL)"
             ,DatabaseContract1.TABLE_NAME1
-            ,DatabaseContract1.FavoriteColoums1._ID
+            ,DatabaseContract1.FavoriteColoums1.ID
             ,DatabaseContract1.FavoriteColoums1.POSTER1
             ,DatabaseContract1.FavoriteColoums1.TITLE1
             ,DatabaseContract1.FavoriteColoums1.DESCRIPTION1);

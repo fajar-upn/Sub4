@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import static android.provider.BaseColumns._ID;
+import static com.example.sub4.Database.DatabaseContract1.FavoriteColoums1.ID;
 import static com.example.sub4.Database.DatabaseContract1.TABLE_NAME1;
 
 public class FavoriteHelper1 {
@@ -51,7 +52,7 @@ public class FavoriteHelper1 {
                 null,
                 null,
                 null,
-                _ID + " ASC",
+                ID + " ASC",
                 null
         );
     }
@@ -61,10 +62,10 @@ public class FavoriteHelper1 {
     }
 
     public int update1(String id, ContentValues values){
-        return database1.update(DATABASE_TABLE_1,values,_ID+ " = ?", new String[]{id});
+        return database1.update(DATABASE_TABLE_1,values,ID+ " = ?", new String[]{id});
     }
 
     public int deleteById1(String id){
-        return database1.delete(DATABASE_TABLE_1,_ID + " = ?", new String[]{id});
+        return database1.delete(DATABASE_TABLE_1,ID + " = ?", new String[]{id});
     }
 }

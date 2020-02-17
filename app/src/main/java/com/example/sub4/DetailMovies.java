@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.example.sub4.Entity.Favorite;
 import com.example.sub4.Model.MoviesModel;
 
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.DESCRIPTION;
+import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.ID;
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.POSTER;
 import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.TITLE;
 
@@ -43,7 +45,6 @@ public class DetailMovies extends AppCompatActivity {
     public static final String EXTRA_FAVORITE = "extra_favorite";
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_DATA = "extra_data";
-    public static final int RESULT_ADD = 101;
     public static final int RESULT_UPDATE = 201;
 
     @Override
@@ -79,28 +80,29 @@ public class DetailMovies extends AppCompatActivity {
         String btnTitle;
 
         //indikator telah di pencet favorite
-        if (isFavorite){
-            actionBarTitle = "Unfavorite";
-            btnTitle = "Unfavorite";
-        }else {
-            actionBarTitle = "Favorite";
-            btnTitle = "Favorite";
-        }
-
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(actionBarTitle);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        btnFavorite.setText(btnTitle);
+//        if (isFavorite){
+//            actionBarTitle = "Unfavorite";
+//            btnTitle = "Unfavorite";
+//        }else {
+//            actionBarTitle = "Favorite";
+//            btnTitle = "Favorite";
+//        }
+//
+//        if (getSupportActionBar() != null){
+//            getSupportActionBar().setTitle(actionBarTitle);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
+//
+//        btnFavorite.setText(btnTitle);
 
         if (movies!=null){
 
+            final int id = movies.getId();
             final String poster = movies.getPoster();
             final String title = movies.getTitle();
             final String description = movies.getDescription();
 
-            Glide.with(this).load(poster).into(ivPoster);
+            Glide.with(this).load(poster).fitCenter().into(ivPoster);
             tvTitle.setText(title);
             tvDescription.setText(description);
 
@@ -108,20 +110,20 @@ public class DetailMovies extends AppCompatActivity {
                 @Override
                 public void onClick(View v){
 
-                    Toast.makeText(DetailMovies.this,"Favorite"
+                    Toast.makeText(DetailMovies.this,"Favorite : "
                             +movies.getTitle(),Toast.LENGTH_SHORT).show();
 
+                    favorite.setId(id);
                     favorite.setPoster(poster);
                     favorite.setTitle(title);
                     favorite.setDescription(description);
 
                     Intent intent = new Intent();
                     intent.putExtra(EXTRA_FAVORITE, favorite);
-
                     intent.putExtra(EXTRA_POSITION, position);
 
-
                     ContentValues values = new ContentValues();
+                    values.put(ID,id);
                     values.put(POSTER,poster);
                     values.put(TITLE,title);
                     values.put(DESCRIPTION, description);
@@ -137,12 +139,9 @@ public class DetailMovies extends AppCompatActivity {
                         long result = favoriteHelper.insert(values);
 
                         if (result>0){
-                            favorite.setId((int) result);
-                            setResult(RESULT_ADD,intent);
-                            favoriteMoviesAdapater.addItem(favorite);
                             finish();
                         }else {
-                            Toast.makeText(DetailMovies.this,"Gagal Menambahkan favorite",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailMovies.this,"Failed to add favorite",Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

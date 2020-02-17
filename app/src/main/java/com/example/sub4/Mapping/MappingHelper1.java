@@ -12,7 +12,7 @@ public class MappingHelper1 {
         ArrayList<Favorite1> favoriteList = new ArrayList<>();
 
         while (favoriteCursor.moveToNext()){
-            int id = favoriteCursor.getInt(favoriteCursor.getColumnIndexOrThrow(DatabaseContract1.FavoriteColoums1._ID));
+            int id = favoriteCursor.getInt(favoriteCursor.getColumnIndexOrThrow(DatabaseContract1.FavoriteColoums1.ID));
             String poster = favoriteCursor.getString(favoriteCursor.getColumnIndexOrThrow(DatabaseContract1.FavoriteColoums1.POSTER1));
             String title = favoriteCursor.getString(favoriteCursor.getColumnIndexOrThrow(DatabaseContract1.FavoriteColoums1.TITLE1));
             String description = favoriteCursor.getString(favoriteCursor.getColumnIndexOrThrow(DatabaseContract1.FavoriteColoums1.DESCRIPTION1));

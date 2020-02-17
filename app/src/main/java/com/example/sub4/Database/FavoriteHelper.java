@@ -13,6 +13,7 @@ import com.example.sub4.Entity.Favorite;
 import java.util.ArrayList;
 
 import static android.provider.BaseColumns._ID;
+import static com.example.sub4.Database.DatabaseContract.FavoriteColoums.ID;
 import static com.example.sub4.Database.DatabaseContract.TABLE_NAME;
 
 public class FavoriteHelper {
@@ -56,7 +57,7 @@ public class FavoriteHelper {
                 null,
                 null,
                 null,
-                _ID+" ASC",
+                ID+" ASC",
                 null
         );
     }
@@ -64,7 +65,7 @@ public class FavoriteHelper {
     public Cursor queryById(String id){
         return database.query(DATABASE_TABLE,
                 null,
-                _ID + " = ?",
+                ID + " = ?",
                 new String[]{id},
                 null,
                 null,
@@ -78,10 +79,10 @@ public class FavoriteHelper {
     }
 
     public int update(String id, ContentValues values){
-        return database.update(DATABASE_TABLE, values,_ID + " = ?", new String[]{id});
+        return database.update(DATABASE_TABLE, values,ID + " = ?", new String[]{id});
     }
 
     public int deleteById(String id){
-        return database.delete(DATABASE_TABLE, _ID+" = ?", new String[]{id});
+        return database.delete(DATABASE_TABLE, ID+" = ?", new String[]{id});
     }
 }

@@ -12,18 +12,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/iv_favorite_poster_movies_detail"
-        android:layout_width="200dp"
-        android:layout_height="260dp"
-        android:layout_marginLeft="110dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/ic_camera_alt_black_24dp"
-        android:scaleType="center"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_favorite_title_movies_detail" />
 
     <TextView
         android:id="@+id/tv_favorite_title_movies_detail"
@@ -31,6 +32,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_favorite_poster_movies_detail"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_favorite_description_movies_detail"
         android:text="@string/text_title"
         android:textSize="22dp"
         android:layout_marginTop="10dp"
@@ -45,6 +48,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_favorite_title_movies_detail"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_unfavorite_movies_detail"
         android:text="@string/text_description"
         android:textSize="14dp"
         android:layout_marginTop="10dp"
@@ -58,11 +63,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_unfavorite"
+        app:layout_constraintTop_toBottomOf="@id/tv_favorite_description_movies_detail"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:layout_marginBottom="20dp"
         android:textAllCaps="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
